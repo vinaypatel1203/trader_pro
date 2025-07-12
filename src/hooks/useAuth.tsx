@@ -231,39 +231,3 @@ export const useAuth = () => {
   }
   return context;
 };
-      });
-
-      localStorage.setItem('tradejournal_token', token);
-      setAuthState(prev => ({
-        ...prev,
-        user: updatedUser,
-        token
-      }));
-
-      return true;
-    } catch (error) {
-      console.error('Profile update error:', error);
-      return false;
-    }
-  };
-
-  return (
-    <AuthContext.Provider value={{
-      ...authState,
-      login,
-      logout,
-      register,
-      updateProfile
-    }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
