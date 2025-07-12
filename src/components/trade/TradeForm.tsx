@@ -66,7 +66,7 @@ export const TradeForm: React.FC<TradeFormProps> = ({ trade, onSubmit, onCancel 
         newErrors.target = 'Target should be above entry price for BUY trades';
       }
     } else {
-      if (formData.stopLoss <= formData.entryPrice) {
+      if (formData.stopLoss >= formData.entryPrice) {
         newErrors.stopLoss = 'Stop loss should be above entry price for SELL trades';
       }
       if (formData.target <= formData.entryPrice) {
