@@ -23,26 +23,34 @@ export const useTrades = () => {
       setLoading(true);
       
       try {
-        // Fetch trades with strategy names
+        // First, fetch strategies separately
+        const { data: strategiesData, error: strategiesError } = await supabase
+          .from('strategies')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('name');
+
+        if (strategiesError) throw strategiesError;
+        const strategiesMap = new Map(strategiesData?.map(s => [s.id, s.name]) || []);
+        setStrategies(strategiesData || []);
+
+        // Then fetch trades without joining strategies
         const { data: tradesData, error: tradesError } = await supabase
           .from('trades')
-          .select(`
-            *,
-            strategies(name)
-          `)
+          .select('*')
           .eq('user_id', user.id)
           .order('created_at', { ascending: false });
 
         if (tradesError) throw tradesError;
 
-        // Transform data to match Trade interface
+        // Transform data to match Trade interface, looking up strategy names
         const transformedTrades: Trade[] = (tradesData || []).map(trade => ({
           id: trade.id,
           userId: trade.user_id,
           symbol: trade.symbol,
           type: trade.type,
           status: trade.status,
-          strategy: trade.strategies?.name || 'Unknown',
+          strategy: strategiesMap.get(trade.strategy_id) || 'Unknown',
           entryPrice: Number(trade.entry_price),
           exitPrice: trade.exit_price ? Number(trade.exit_price) : undefined,
           quantity: trade.quantity,
@@ -62,16 +70,6 @@ export const useTrades = () => {
         }));
 
         setTrades(transformedTrades);
-
-        // Fetch strategies
-        const { data: strategiesData, error: strategiesError } = await supabase
-          .from('strategies')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('name');
-
-        if (strategiesError) throw strategiesError;
-        setStrategies(strategiesData || []);
 
       } catch (error) {
         console.error('Error fetching data:', error);
