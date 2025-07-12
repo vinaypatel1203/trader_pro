@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Upload, Calendar, DollarSign, Target, AlertTriangle } from 'lucide-react';
 import { Trade } from '../../types';
+import { useTrades } from '../../hooks/useTrades';
 
 interface TradeFormProps {
   trade?: Trade;
@@ -9,6 +10,7 @@ interface TradeFormProps {
 }
 
 export const TradeForm: React.FC<TradeFormProps> = ({ trade, onSubmit, onCancel }) => {
+  const { strategies } = useTrades();
   const [formData, setFormData] = useState({
     symbol: trade?.symbol || '',
     type: trade?.type || 'BUY' as 'BUY' | 'SELL',
@@ -30,11 +32,6 @@ export const TradeForm: React.FC<TradeFormProps> = ({ trade, onSubmit, onCancel 
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const strategies = [
-    'Breakout', 'Reversal', 'Support Bounce', 'Resistance Rejection',
-    'Momentum', 'Scalping', 'Swing Trading', 'Day Trading', 'Position Trading'
-  ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -173,7 +170,7 @@ export const TradeForm: React.FC<TradeFormProps> = ({ trade, onSubmit, onCancel 
               >
                 <option value="">Select Strategy</option>
                 {strategies.map(strategy => (
-                  <option key={strategy} value={strategy}>{strategy}</option>
+                  <option key={strategy.id} value={strategy.name}>{strategy.name}</option>
                 ))}
               </select>
               {errors.strategy && <p className="text-red-600 text-sm mt-1">{errors.strategy}</p>}

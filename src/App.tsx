@@ -8,6 +8,9 @@ import { Dashboard } from './components/dashboard/Dashboard';
 import { TradeJournal } from './components/journal/TradeJournal';
 import { AnalyticsDashboard } from './components/analytics/AnalyticsDashboard';
 import { TradeForm } from './components/trade/TradeForm';
+import { Settings } from './components/settings/Settings';
+import { SharedTrades } from './components/shared/SharedTrades';
+import { SocialFeed } from './components/social/SocialFeed';
 import { Trade } from './types';
 
 function AppContent() {
@@ -67,23 +70,9 @@ function AppContent() {
       case 'analytics':
         return <AnalyticsDashboard />;
       case 'shared':
-        return (
-          <div className="space-y-6">
-            <h1 className="text-2xl font-bold text-gray-900">Shared Trades</h1>
-            <div className="bg-white rounded-xl p-8 text-center border border-gray-200">
-              <p className="text-gray-600">Shared trades feature coming soon...</p>
-            </div>
-          </div>
-        );
+        return <SharedTrades />;
       case 'social':
-        return (
-          <div className="space-y-6">
-            <h1 className="text-2xl font-bold text-gray-900">Social Feed</h1>
-            <div className="bg-white rounded-xl p-8 text-center border border-gray-200">
-              <p className="text-gray-600">Social feed feature coming soon...</p>
-            </div>
-          </div>
-        );
+        return <SocialFeed />;
       case 'templates':
         return (
           <div className="space-y-6">
@@ -103,14 +92,7 @@ function AppContent() {
           </div>
         );
       case 'settings':
-        return (
-          <div className="space-y-6">
-            <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-            <div className="bg-white rounded-xl p-8 text-center border border-gray-200">
-              <p className="text-gray-600">Settings feature coming soon...</p>
-            </div>
-          </div>
-        );
+        return <Settings />;
       default:
         return <Dashboard onAddTrade={handleAddTrade} onEditTrade={handleEditTrade} />;
     }
