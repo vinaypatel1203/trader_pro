@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           .from('profiles')
           .select('*')
           .eq('id', session.user.id)
-          .single();
+          .maybeSingle();
 
         if (profile) {
           const user: User = {
@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           .from('profiles')
           .select('*')
           .eq('id', data.user.id)
-          .single();
+          .maybeSingle();
 
         if (profile) {
           const user: User = {
