@@ -36,7 +36,13 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
         setError('Registration failed. Please try again.');
       }
     } catch (err) {
-      setError('Registration failed. Please try again.');
+      const errorMessage = err instanceof Error ? err.message : 'Registration failed. Please try again.';
+      
+      if (errorMessage.includes('User already registered') || errorMessage.includes('user_already_exists')) {
+        setError('This email is already registered. Please try logging in or use a different email.');
+      } else {
+        setError('Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
