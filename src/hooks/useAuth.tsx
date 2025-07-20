@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { User, AuthState } from '../types';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<boolean>;
@@ -20,36 +20,47 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   });
 
   useEffect(() => {
+    // Skip auth check if Supabase is not configured
+    if (!isSupabaseConfigured) {
+      setAuthState(prev => ({ ...prev, loading: false }));
+      return;
+    }
+
     // Check for existing session
     const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .maybeSingle();
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .maybeSingle();
 
-        if (profile) {
-          const user: User = {
-            id: profile.id,
-            username: profile.username,
-            email: session.user.email!,
-            bio: profile.bio,
-            avatar: profile.avatar_url,
-            isPublic: profile.is_public,
-            createdAt: profile.created_at,
-            updatedAt: profile.updated_at
-          };
+          if (profile) {
+            const user: User = {
+              id: profile.id,
+              username: profile.username,
+              email: session.user.email!,
+              bio: profile.bio,
+              avatar: profile.avatar_url,
+              isPublic: profile.is_public,
+              createdAt: profile.created_at,
+              updatedAt: profile.updated_at
+            };
 
-          setAuthState({
-            user,
-            token: session.access_token,
-            isAuthenticated: true,
-            loading: false
-          });
+            setAuthState({
+              user,
+              token: session.access_token,
+              isAuthenticated: true,
+              loading: false
+            });
+          }
+        } else {
+          setAuthState(prev => ({ ...prev, loading: false }));
         }
-      } else {
+      } catch (error) {
+        console.error('Session check failed:', error);
         setAuthState(prev => ({ ...prev, loading: false }));
       }
     };
@@ -72,6 +83,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
+    if (!isSupabaseConfigured) {
+      console.error('Supabase is not configured. Please check your environment variables.');
+      return false;
+    }
+
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -117,6 +133,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
+    if (!isSupabaseConfigured) {
+      setAuthState({
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        loading: false
+      });
+      return;
+    }
+
     supabase.auth.signOut();
     setAuthState({
       user: null,
@@ -127,6 +153,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const register = async (userData: Partial<User> & { password: string }): Promise<boolean> => {
+    if (!isSupabaseConfigured) {
+      console.error('Supabase is not configured. Please check your environment variables.');
+      return false;
+    }
+
     try {
       const { data, error } = await supabase.auth.signUp({
         email: userData.email!,
@@ -177,6 +208,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateProfile = async (userData: Partial<User>): Promise<boolean> => {
+    if (!isSupabaseConfigured) {
+      console.error('Supabase is not configured. Please check your environment variables.');
+      return false;
+    }
+
     try {
       if (!authState.user) return false;
 
