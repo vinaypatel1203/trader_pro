@@ -203,7 +203,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return false;
     } catch (error) {
       console.error('Registration error:', error);
-      return false;
+      throw error;
     }
   };
 
