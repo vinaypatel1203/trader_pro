@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './hooks/useAuth.tsx';
+import { useTrades } from './hooks/useTrades';
 import { LoginForm } from './components/auth/LoginForm';
 import { RegisterForm } from './components/auth/RegisterForm';
 import { Header } from './components/layout/Header';
@@ -15,6 +16,7 @@ import { Trade } from './types';
 
 function AppContent() {
   const { isAuthenticated, loading } = useAuth();
+  const { createTrade, updateTrade } = useTrades();
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -32,10 +34,29 @@ function AppContent() {
   };
 
   const handleTradeSubmit = async (tradeData: any) => {
-    // In a real app, this would call the API
-    console.log('Trade submitted:', tradeData);
-    setShowTradeForm(false);
-    setEditingTrade(undefined);
+    try {
+      if (editingTrade) {
+        // Update existing trade
+        const success = await updateTrade(editingTrade.id, tradeData);
+        if (success) {
+          console.log('Trade updated successfully');
+        } else {
+          console.error('Failed to update trade');
+        }
+      } else {
+        // Create new trade
+        const newTrade = await createTrade(tradeData);
+        if (newTrade) {
+          console.log('Trade created successfully');
+        } else {
+          console.error('Failed to create trade');
+        }
+      }
+      setShowTradeForm(false);
+      setEditingTrade(undefined);
+    } catch (error) {
+      console.error('Error submitting trade:', error);
+    }
   };
 
   const handleTradeFormCancel = () => {
