@@ -87,6 +87,8 @@ export const TradeForm: React.FC<TradeFormProps> = ({ trade, onSubmit, onCancel 
       ...formData,
       entryPrice: Number(formData.entryPrice),
       exitPrice: formData.exitPrice ? Number(formData.exitPrice) : undefined,
+      entryTime: formData.entryTime || undefined,
+      exitTime: formData.exitTime || undefined,
       quantity: Number(formData.quantity),
       stopLoss: Number(formData.stopLoss),
       target: Number(formData.target),
