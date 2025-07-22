@@ -17,7 +17,7 @@ export interface Trade {
   userId: string;
   symbol: string;
   type: 'BUY' | 'SELL';
-  status: 'RUNNING' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'CLOSED' | 'PARTIAL';
+  status: 'OPEN' | 'RUNNING' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'CLOSED' | 'PARTIAL';
   strategy: string;
   entryPrice: number;
   exitPrice?: number;

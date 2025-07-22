@@ -93,7 +93,7 @@ export interface Database {
           user_id: string;
           symbol: string;
           type: 'BUY' | 'SELL';
-          status: 'RUNNING' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'CLOSED' | 'PARTIAL';
+          status: 'OPEN' | 'RUNNING' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'CLOSED' | 'PARTIAL';
           strategy_id: string | null;
           entry_price: number;
           exit_price: number | null;
@@ -116,7 +116,7 @@ export interface Database {
           user_id: string;
           symbol: string;
           type: 'BUY' | 'SELL';
-          status: 'RUNNING' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'CLOSED' | 'PARTIAL';
+          status: 'OPEN' | 'RUNNING' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'CLOSED' | 'PARTIAL';
           strategy_id?: string | null;
           entry_price: number;
           exit_price?: number | null;
@@ -139,7 +139,7 @@ export interface Database {
           user_id?: string;
           symbol?: string;
           type?: 'BUY' | 'SELL';
-          status?: 'RUNNING' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'CLOSED' | 'PARTIAL';
+          status?: 'OPEN' | 'RUNNING' | 'TARGET_HIT' | 'STOP_LOSS_HIT' | 'CLOSED' | 'PARTIAL';
           strategy_id?: string | null;
           entry_price?: number;
           exit_price?: number | null;

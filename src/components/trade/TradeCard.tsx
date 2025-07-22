@@ -33,6 +33,7 @@ export const TradeCard: React.FC<TradeCardProps> = ({
 
   const getStatusColor = (status: Trade['status']) => {
     switch (status) {
+      case 'OPEN': return 'bg-orange-100 text-orange-800';
       case 'RUNNING': return 'bg-blue-100 text-blue-800';
       case 'TARGET_HIT': return 'bg-green-100 text-green-800';
       case 'STOP_LOSS_HIT': return 'bg-red-100 text-red-800';
@@ -44,6 +45,7 @@ export const TradeCard: React.FC<TradeCardProps> = ({
 
   const getStatusIcon = (status: Trade['status']) => {
     switch (status) {
+      case 'OPEN': return <Clock className="w-4 h-4" />;
       case 'RUNNING': return <Clock className="w-4 h-4" />;
       case 'TARGET_HIT': return <Target className="w-4 h-4" />;
       case 'STOP_LOSS_HIT': return <AlertTriangle className="w-4 h-4" />;

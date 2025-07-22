@@ -15,12 +15,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTrade, onEditTrade })
   const analytics = getTradeAnalytics();
 
   const recentTrades = trades.slice(0, 3);
-  const runningTrades = trades.filter(trade => trade.status === 'RUNNING');
+  const activeTrades = trades.filter(trade => ['OPEN', 'RUNNING'].includes(trade.status));
+  const openTrades = trades.filter(trade => trade.status === 'OPEN');
 
   const quickStats = [
     {
-      title: 'Running Trades',
-      value: runningTrades.length,
+      title: 'Active Trades',
+      value: activeTrades.length,
       icon: Clock,
       color: 'blue'
     },
@@ -92,16 +93,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ onAddTrade, onEditTrade })
       </div>
 
       {/* Running Trades */}
-      {runningTrades.length > 0 && (
+      {activeTrades.length > 0 && (
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">Running Trades</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Active Trades</h2>
             <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm font-medium">
-              {runningTrades.length} active
+              {activeTrades.length} active
             </span>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {runningTrades.map(trade => (
+            {activeTrades.map(trade => (
               <TradeCard
                 key={trade.id}
                 trade={trade}

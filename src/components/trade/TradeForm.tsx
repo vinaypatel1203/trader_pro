@@ -14,7 +14,7 @@ export const TradeForm: React.FC<TradeFormProps> = ({ trade, onSubmit, onCancel 
   const [formData, setFormData] = useState({
     symbol: trade?.symbol || '',
     type: trade?.type || 'BUY' as 'BUY' | 'SELL',
-    status: trade?.status || 'RUNNING' as Trade['status'],
+    status: trade?.status || 'OPEN' as Trade['status'],
     strategy: trade?.strategy || '',
     entryPrice: trade?.entryPrice || 0,
     exitPrice: trade?.exitPrice || 0,
@@ -186,6 +186,7 @@ export const TradeForm: React.FC<TradeFormProps> = ({ trade, onSubmit, onCancel 
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
+                <option value="OPEN">Open (Setup Ready)</option>
                 <option value="RUNNING">Running</option>
                 <option value="TARGET_HIT">Target Hit</option>
                 <option value="STOP_LOSS_HIT">Stop Loss Hit</option>
