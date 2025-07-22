@@ -87,6 +87,7 @@ export const TradeJournal: React.FC<TradeJournalProps> = ({ onAddTrade, onEditTr
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">All Statuses</option>
+                  <option value="OPEN">Open</option>
                   <option value="RUNNING">Running</option>
                   <option value="TARGET_HIT">Target Hit</option>
                   <option value="STOP_LOSS_HIT">Stop Loss Hit</option>
@@ -135,7 +136,7 @@ export const TradeJournal: React.FC<TradeJournalProps> = ({ onAddTrade, onEditTr
       </div>
 
       {/* Stats Summary */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <div className="bg-white rounded-lg p-4 border border-gray-200">
           <div className="text-center">
             <p className="text-2xl font-bold text-gray-900">{filteredTrades.length}</p>
@@ -145,6 +146,14 @@ export const TradeJournal: React.FC<TradeJournalProps> = ({ onAddTrade, onEditTr
         <div className="bg-white rounded-lg p-4 border border-gray-200">
           <div className="text-center">
             <p className="text-2xl font-bold text-blue-600">
+              {filteredTrades.filter(t => t.status === 'OPEN').length}
+            </p>
+            <p className="text-sm text-gray-600">Open Setups</p>
+          </div>
+        </div>
+        <div className="bg-white rounded-lg p-4 border border-gray-200">
+          <div className="text-center">
+            <p className="text-2xl font-bold text-purple-600">
               {filteredTrades.filter(t => t.status === 'RUNNING').length}
             </p>
             <p className="text-sm text-gray-600">Running</p>
