@@ -128,7 +128,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return false;
     } catch (error) {
       console.error('Login error:', error);
-      return false;
+      if (error.message?.includes('Invalid login credentials')) {
+        throw new Error('Invalid email or password. Please check your credentials or register a new account.');
+      }
+      throw new Error('Login failed. Please try again.');
     }
   };
 

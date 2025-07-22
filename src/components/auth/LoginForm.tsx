@@ -126,9 +126,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
         </div>
 
         <div className="mt-4 text-center">
-          <p className="text-sm text-gray-500">
-            Demo: Use any email and password to login
-          </p>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p className="text-sm text-blue-700">
+              <strong>Demo Mode:</strong> Please register a new account first, then use those credentials to login.
+            </p>
+          </div>
         </div>
       </div>
     </div>
